@@ -11,6 +11,12 @@ from langchain_agent import run_langchain_agent
 load_dotenv()
 os.environ["DISABLE_EMAIL"] = "1"
 
+GOOGLE_CRED_JSON = os.getenv("GOOGLE_CRED_JSON")
+GOOGLE_CREDENTIALS_PATH = os.getenv("GOOGLE_CREDENTIALS_PATH", "google_credentials.json")
+if GOOGLE_CRED_JSON and not os.path.exists(GOOGLE_CREDENTIALS_PATH):
+    with open(GOOGLE_CREDENTIALS_PATH, "w", encoding="utf-8") as f:
+        f.write(GOOGLE_CRED_JSON)
+
 app = FastAPI()
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 JOBS: dict[str, dict] = {}
