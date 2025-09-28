@@ -42,11 +42,14 @@ def zip_tool(city_name: str) -> str:
 @tool
 def send_email_tool(city_name: str) -> str:
     '''Odešli zkomprimovaný výstup na zadanou e-mailovou adresu.'''
+    zip_path = f'municipalities_data/{city_name}.zip'
+    if os.getenv('DISABLE_EMAIL') == '1':
+        return f'E-mailové funkce vypnuty pro demo. Stažení: {zip_path}'
+
     email = os.getenv('RECIPIENT_EMAIL')
     if not email:
         return 'Nebyl nalezen e-mail příjemce.'
 
-    zip_path = f'municipalities_data/{city_name}.zip'
     subject = f'Územní analýza: {city_name}'
     body = f'Zde jsou výstupy analytického nástroje pro obec {city_name}.'
     send_email(email, subject, body, zip_path)
